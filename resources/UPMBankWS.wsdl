@@ -1,0 +1,195 @@
+<wsdl2:description xmlns:wsdl2="http://www.w3.org/ns/wsdl" xmlns:wsoap="http://www.w3.org/ns/wsdl/soap" xmlns:whttp="http://www.w3.org/ns/wsdl/http" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdlx="http://www.w3.org/ns/wsdl-extensions" xmlns:tns="http://upmbank.sos.fi.upm.es" xmlns:wrpc="http://www.w3.org/ns/wsdl/rpc" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ax21="http://upmbank.sos.fi.upm.es/xsd" xmlns:ns1="http://org.apache.axis2/xsd" targetNamespace="http://upmbank.sos.fi.upm.es"><wsdl2:types><xs:schema xmlns:ns="http://upmbank.sos.fi.upm.es" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://upmbank.sos.fi.upm.es/xsd">
+<xs:complexType name="Deposit">
+<xs:sequence>
+<xs:element minOccurs="0" name="quantity" type="xs:double" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="BankAccountResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="IBAN" nillable="true" type="xs:string" />
+<xs:element minOccurs="0" name="result" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="BankAccount">
+<xs:sequence>
+<xs:element minOccurs="0" name="IBAN" nillable="true" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Response">
+<xs:sequence>
+<xs:element minOccurs="0" name="response" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Movement">
+<xs:sequence>
+<xs:element minOccurs="0" name="IBAN" nillable="true" type="xs:string" />
+<xs:element minOccurs="0" name="quantity" type="xs:double" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AddMovementResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="balance" type="xs:double" />
+<xs:element minOccurs="0" name="result" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="MovementList">
+<xs:sequence>
+<xs:element maxOccurs="unbounded" minOccurs="0" name="movementQuantities" nillable="true" type="xs:double" />
+<xs:element minOccurs="0" name="result" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="Username">
+<xs:sequence>
+<xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="AddUserResponse">
+<xs:sequence>
+<xs:element minOccurs="0" name="pwd" nillable="true" type="xs:string" />
+<xs:element minOccurs="0" name="response" type="xs:boolean" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="PasswordPair">
+<xs:sequence>
+<xs:element minOccurs="0" name="newpwd" nillable="true" type="xs:string" />
+<xs:element minOccurs="0" name="oldpwd" nillable="true" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+<xs:complexType name="User">
+<xs:sequence>
+<xs:element minOccurs="0" name="name" nillable="true" type="xs:string" />
+<xs:element minOccurs="0" name="pwd" nillable="true" type="xs:string" />
+</xs:sequence>
+</xs:complexType>
+</xs:schema><xs:schema xmlns:ns="http://upmbank.sos.fi.upm.es" xmlns:ax22="http://upmbank.sos.fi.upm.es/xsd" attributeFormDefault="qualified" elementFormDefault="qualified" targetNamespace="http://upmbank.sos.fi.upm.es">
+<xs:import namespace="http://upmbank.sos.fi.upm.es/xsd" />
+<xs:element name="addBankAcc">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="args0" nillable="true" type="ax22:Deposit" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="addBankAccResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax22:BankAccountResponse" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="closeBankAcc">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="args0" nillable="true" type="ax22:BankAccount" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="closeBankAccResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax22:Response" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="addIncome">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="args0" nillable="true" type="ax22:Movement" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="addIncomeResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax22:AddMovementResponse" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="addWithdrawal">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="args0" nillable="true" type="ax22:Movement" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="addWithdrawalResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax22:AddMovementResponse" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="getMyMovements">
+<xs:complexType>
+<xs:sequence />
+</xs:complexType>
+</xs:element>
+<xs:element name="getMyMovementsResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax22:MovementList" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="addUser">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="args0" nillable="true" type="ax22:Username" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="addUserResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax22:AddUserResponse" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="logout">
+<xs:complexType>
+<xs:sequence />
+</xs:complexType>
+</xs:element>
+<xs:element name="removeUser">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="args0" nillable="true" type="ax22:Username" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="removeUserResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax22:Response" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="changePassword">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="args0" nillable="true" type="ax22:PasswordPair" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="changePasswordResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax22:Response" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="login">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="args0" nillable="true" type="ax22:User" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+<xs:element name="loginResponse">
+<xs:complexType>
+<xs:sequence>
+<xs:element minOccurs="0" name="return" nillable="true" type="ax22:Response" />
+</xs:sequence>
+</xs:complexType>
+</xs:element>
+</xs:schema></wsdl2:types><wsdl2:interface name="ServiceInterface"><wsdl2:operation name="addBankAcc" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="args0 #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out" wsdlx:safe="false"><wsdl2:input element="tns:addBankAcc" wsaw:Action="urn:addBankAcc" /><wsdl2:output element="tns:addBankAccResponse" wsaw:Action="urn:addBankAccResponse" /></wsdl2:operation><wsdl2:operation name="closeBankAcc" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="args0 #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out" wsdlx:safe="false"><wsdl2:input element="tns:closeBankAcc" wsaw:Action="urn:closeBankAcc" /><wsdl2:output element="tns:closeBankAccResponse" wsaw:Action="urn:closeBankAccResponse" /></wsdl2:operation><wsdl2:operation name="logout" style="http://www.w3.org/ns/wsdl/style/rpc http://www.w3.org/ns/wsdl/style/iri http://www.w3.org/ns/wsdl/style/multipart" wrpc:signature="" pattern="http://www.w3.org/ns/wsdl/in-only" wsdlx:safe="false"><wsdl2:input element="tns:logout" wsaw:Action="urn:logout" /></wsdl2:operation><wsdl2:operation name="removeUser" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="args0 #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out" wsdlx:safe="false"><wsdl2:input element="tns:removeUser" wsaw:Action="urn:removeUser" /><wsdl2:output element="tns:removeUserResponse" wsaw:Action="urn:removeUserResponse" /></wsdl2:operation><wsdl2:operation name="addWithdrawal" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="args0 #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out" wsdlx:safe="false"><wsdl2:input element="tns:addWithdrawal" wsaw:Action="urn:addWithdrawal" /><wsdl2:output element="tns:addWithdrawalResponse" wsaw:Action="urn:addWithdrawalResponse" /></wsdl2:operation><wsdl2:operation name="addUser" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="args0 #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out" wsdlx:safe="false"><wsdl2:input element="tns:addUser" wsaw:Action="urn:addUser" /><wsdl2:output element="tns:addUserResponse" wsaw:Action="urn:addUserResponse" /></wsdl2:operation><wsdl2:operation name="addIncome" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="args0 #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out" wsdlx:safe="false"><wsdl2:input element="tns:addIncome" wsaw:Action="urn:addIncome" /><wsdl2:output element="tns:addIncomeResponse" wsaw:Action="urn:addIncomeResponse" /></wsdl2:operation><wsdl2:operation name="login" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="args0 #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out" wsdlx:safe="false"><wsdl2:input element="tns:login" wsaw:Action="urn:login" /><wsdl2:output element="tns:loginResponse" wsaw:Action="urn:loginResponse" /></wsdl2:operation><wsdl2:operation name="getMyMovements" style="http://www.w3.org/ns/wsdl/style/rpc http://www.w3.org/ns/wsdl/style/iri http://www.w3.org/ns/wsdl/style/multipart" wrpc:signature="return #return " pattern="http://www.w3.org/ns/wsdl/in-out" wsdlx:safe="false"><wsdl2:input element="tns:getMyMovements" wsaw:Action="urn:getMyMovements" /><wsdl2:output element="tns:getMyMovementsResponse" wsaw:Action="urn:getMyMovementsResponse" /></wsdl2:operation><wsdl2:operation name="changePassword" style="http://www.w3.org/ns/wsdl/style/rpc" wrpc:signature="args0 #in return #return " pattern="http://www.w3.org/ns/wsdl/in-out" wsdlx:safe="false"><wsdl2:input element="tns:changePassword" wsaw:Action="urn:changePassword" /><wsdl2:output element="tns:changePasswordResponse" wsaw:Action="urn:changePasswordResponse" /></wsdl2:operation></wsdl2:interface><wsdl2:binding name="UPMBankWSSoap12Binding" interface="tns:ServiceInterface" type="http://www.w3.org/ns/wsdl/soap" wsoap:version="1.2"><wsdl2:operation ref="tns:addBankAcc" wsoap:action="urn:addBankAcc" /><wsdl2:operation ref="tns:closeBankAcc" wsoap:action="urn:closeBankAcc" /><wsdl2:operation ref="tns:logout" wsoap:action="urn:logout" /><wsdl2:operation ref="tns:removeUser" wsoap:action="urn:removeUser" /><wsdl2:operation ref="tns:addWithdrawal" wsoap:action="urn:addWithdrawal" /><wsdl2:operation ref="tns:addUser" wsoap:action="urn:addUser" /><wsdl2:operation ref="tns:addIncome" wsoap:action="urn:addIncome" /><wsdl2:operation ref="tns:login" wsoap:action="urn:login" /><wsdl2:operation ref="tns:getMyMovements" wsoap:action="urn:getMyMovements" /><wsdl2:operation ref="tns:changePassword" wsoap:action="urn:changePassword" /></wsdl2:binding><wsdl2:service name="UPMBankWS" interface="tns:ServiceInterface"><wsdl2:endpoint name="UPMBankWSHttpSoap12Endpoint" binding="tns:UPMBankWSSoap12Binding" address="http://localhost:8080/axis2/services/UPMBankWS" /></wsdl2:service></wsdl2:description>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- This file was auto-generated from WSDL -->
+<!-- by the Apache Axis2 version: 1.6.2  Built on : Apr 17, 2012 (05:33:49 IST) -->
+<serviceGroup>
+    <service name="UPMBankWS" scope="soapsession">
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-only" class="es.upm.fi.sos.upmbank.UPMBankWSMessageReceiverInOnly"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out" class="es.upm.fi.sos.upmbank.UPMBankWSMessageReceiverInOut"/>
+        </messageReceivers>
+        <parameter name="ServiceClass">es.upm.fi.sos.upmbank.UPMBankWSSkeleton</parameter>
+        <parameter name="useOriginalwsdl">true</parameter>
+        <parameter name="modifyUserWSDLPortAddress">true</parameter>
+        <operation name="addBankAcc" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://upmbank.sos.fi.upm.es">
+            <actionMapping>urn:addBankAcc</actionMapping>
+            <outputActionMapping>urn:addBankAccResponse</outputActionMapping>
+        </operation>
+        <operation name="closeBankAcc" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://upmbank.sos.fi.upm.es">
+            <actionMapping>urn:closeBankAcc</actionMapping>
+            <outputActionMapping>urn:closeBankAccResponse</outputActionMapping>
+        </operation>
+        <operation name="logout" mep="http://www.w3.org/ns/wsdl/in-only" namespace="http://upmbank.sos.fi.upm.es">
+            <actionMapping>urn:logout</actionMapping>
+            <outputActionMapping>urn:logoutResponse</outputActionMapping>
+        </operation>
+        <operation name="removeUser" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://upmbank.sos.fi.upm.es">
+            <actionMapping>urn:removeUser</actionMapping>
+            <outputActionMapping>urn:removeUserResponse</outputActionMapping>
+        </operation>
+        <operation name="addWithdrawal" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://upmbank.sos.fi.upm.es">
+            <actionMapping>urn:addWithdrawal</actionMapping>
+            <outputActionMapping>urn:addWithdrawalResponse</outputActionMapping>
+        </operation>
+        <operation name="addUser" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://upmbank.sos.fi.upm.es">
+            <actionMapping>urn:addUser</actionMapping>
+            <outputActionMapping>urn:addUserResponse</outputActionMapping>
+        </operation>
+        <operation name="addIncome" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://upmbank.sos.fi.upm.es">
+            <actionMapping>urn:addIncome</actionMapping>
+            <outputActionMapping>urn:addIncomeResponse</outputActionMapping>
+        </operation>
+        <operation name="login" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://upmbank.sos.fi.upm.es">
+            <actionMapping>urn:login</actionMapping>
+            <outputActionMapping>urn:loginResponse</outputActionMapping>
+        </operation>
+        <operation name="getMyMovements" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://upmbank.sos.fi.upm.es">
+            <actionMapping>urn:getMyMovements</actionMapping>
+            <outputActionMapping>urn:getMyMovementsResponse</outputActionMapping>
+        </operation>
+        <operation name="changePassword" mep="http://www.w3.org/ns/wsdl/in-out" namespace="http://upmbank.sos.fi.upm.es">
+            <actionMapping>urn:changePassword</actionMapping>
+            <outputActionMapping>urn:changePasswordResponse</outputActionMapping>
+        </operation>
+    </service>
+</serviceGroup>
