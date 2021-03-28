@@ -1,7 +1,4 @@
 -- -----------------------------------------------------
--- Eva Tagarro Lopez de Ayala z170183
--- Jose Manuel Diaz Urraco z170085
--- -----------------------------------------------------
 -- Para la conexion se ha utilizado el usuario root/restuser.
 -- Aunque no es lo mas ortodoxo pero a efectos de la practica
 -- se considero que no era necesario crear un nuevo usuario.
