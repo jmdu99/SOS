@@ -1,0 +1,930 @@
+openapi: 3.0.0
+info:
+  version: "1.0.0-oas3"
+  title: Banco
+  description: API para la gestión de funcionalidades sencillas de un banco online
+  termsOfService: 'http://swagger.io/terms/'
+servers:
+  - description: SwaggerHub API Auto Mocking
+    url: 'https://virtserver.swaggerhub.com/Phobooky/Banco/1.0.0'
+externalDocs:
+  url: 'http://swagger.io'
+  description: Find out more about Swagger
+tags:
+  - name: usuarios
+    description: Clientes y administradores del banco
+  - name: cuentas
+    description: Cuentas del banco
+  - name: transferencias
+    description: Transferencias bancarias
+  - name: retiradas
+    description: Retiradas de efectivo que se llevan a cabo
+  - name: movimientos
+    description: Transferencias y retiradas del banco
+  - name: appMovil
+    description: Aplicación por la cual un usuario tiene acceso al banco online
+paths:
+  /usuarios:
+    post:
+      tags:
+        - usuarios
+      summary: Añadir un cliente al banco o crear un perfil de usuario de banco
+      operationId: crearUsuario
+      responses:
+        '201':
+          headers:
+            Location:
+              description: 'http://localhost:8080/Banco/api/usuarios/6/6'
+              schema:
+                type: string
+          description: Created. Successful operation
+        '406':
+          description: Not acceptable
+        '500':
+          description: Internal Server Error
+      requestBody:
+        $ref: '#/components/requestBodies/Usuario'
+  '/usuarios/{idUsuario}/{idUsuarioEjecuta}':
+    get:
+      tags:
+        - usuarios
+      summary: Ver los datos básicos de un cliente
+      operationId: verUsuario
+      parameters:
+        - name: idUsuario
+          description: Usuario del que se ven los datos
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idUsuarioEjecuta
+          description: Usuario que intenta ver los datos
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Usuario'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+    put:
+      tags:
+        - usuarios
+      summary: Cambiar datos básicos de un cliente
+      operationId: modificarUsuario
+      parameters:
+        - name: idUsuario
+          description: Usuario del que se cambian los datos
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idUsuarioEjecuta
+          description: Usuario que intenta cambiar los datos
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+      requestBody:
+        $ref: '#/components/requestBodies/Usuario'
+    delete:
+      tags:
+        - usuarios
+      summary: Borrar datos de un usuario si no tiene cuentas
+      operationId: borrarUsuario
+      parameters:
+        - name: idUsuario
+          description: Usuario del que se quieren borrar los datos
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idUsuarioEjecuta
+          description: Usuario que intenta borrar los datos
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content. Successful operation
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '412':
+          description: Precondition Failed
+        '500':
+          description: Internal Server Error
+  '/usuarios/{idUsuarioEjecuta}':
+    get:
+      tags:
+        - usuarios
+      summary: Obtener lista de usuarios según varios criterios
+      operationId: obtenerListaUsuarios
+      parameters:
+        - name: idUsuarioEjecuta
+          description: Usuario que intenta obtener la lista
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: min
+          in: query
+          required: false
+          description: Establece el saldo mínimo que tiene que tener un usuario
+          schema:
+            type: string
+            default: '0'
+        - name: max
+          in: query
+          required: false
+          description: Establece el saldo máximo que tiene que tener un usuario
+          schema:
+            type: string
+            default: '99999'
+        - name: count
+          in: query
+          required: false
+          description: Establece cuántos usuarios se van a mostrar
+          schema:
+            type: string
+            default: '99999'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsuariosSaldo'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/UsuariosSaldo'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  '/cuentas/{idUsuario}/{idUsuarioEjecuta}':
+    post:
+      tags:
+        - cuentas
+      summary: Crear una cuenta bancaria para un cliente
+      operationId: crearCuenta
+      parameters:
+        - name: idUsuario
+          description: Usuario del que se quiere crear una cuenta
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idUsuarioEjecuta
+          description: Usuario que intenta crear una cuenta
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          headers:
+            Location:
+              description: 'http://localhost:8080/Banco/api/cuentas/17/5'
+              schema:
+                type: string
+          description: Created. Successful operation
+        '401':
+          description: Unauthorized
+        '406':
+          description: Not acceptable
+        '412':
+          description: Precondition Failed
+        '500':
+          description: Internal Server Error
+      requestBody:
+        $ref: '#/components/requestBodies/Cuenta'
+  '/cuentas/{idCuenta}/{idUsuarioEjecuta}':
+    delete:
+      tags:
+        - cuentas
+      summary: Borrar cuenta si no tiene saldo
+      operationId: borrarCuenta
+      parameters:
+        - name: idCuenta
+          description: Cuenta que se quiere borrar
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idUsuarioEjecuta
+          description: Usuario que intenta borrar la cuenta
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content. Successful operation
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '412':
+          description: Precondition Failed
+        '500':
+          description: Internal Server Error
+  '/transferencias/{idUsuarioEjecuta}':
+    post:
+      tags:
+        - transferencias
+      summary: Realizar una transferencia entre cuentas
+      operationId: crearTransferencia
+      parameters:
+        - name: idUsuarioEjecuta
+          description: Usuario que realiza la transferencia
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          headers:
+            Location:
+              description: 'http://localhost:8080/Banco/api/transferencias/17'
+              schema:
+                type: string
+          description: Created. Successful operation
+        '401':
+          description: Unauthorized
+        '412':
+          description: Precondition Failed
+        '500':
+          description: Internal Server Error
+      requestBody:
+        $ref: '#/components/requestBodies/Transferencia'
+  '/transferencias/{idTransferencia}/{idUsuarioEjecuta}':
+    delete:
+      tags:
+        - transferencias
+      summary: Borrar transferencia por administrador
+      operationId: borraTransferencia
+      parameters:
+        - name: idTransferencia
+          description: Transferencia que se quiere borrar
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idUsuarioEjecuta
+          description: Usuario que intenta borrar la transferencia
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '204':
+          description: No Content. Successful operation
+        '401':
+          description: Unauthorized
+        '412':
+          description: Precondition Failed
+        '500':
+          description: Internal Server Error
+  '/transferencias/{idCuenta}/{idUsuarioEjecuta}':
+    get:
+      tags:
+        - transferencias
+      summary: Obtener lista de transferencias seleccionadas por varios criterios
+      operationId: obtenerListaTransferencias
+      parameters:
+        - name: idCuenta
+          description: Cuenta de la que se quieren obtener las transferencias
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idUsuarioEjecuta
+          description: Usuario que quiere obtener la lista de transferencias
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: count
+          in: query
+          required: false
+          description: Establece cuántas transferencias se van a mostrar
+          schema:
+            type: string
+            default: '99999'
+        - name: start
+          in: query
+          required: false
+          description: Establece desde donde se muestra la lista de transferencias
+          schema:
+            type: string
+            default: '1'
+        - name: end
+          in: query
+          required: false
+          schema:
+            type: string
+          description: Establece hasta donde se muestra la lista de transferencias
+        - name: date
+          description: Fecha en la que se realizó la transferencia
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transferencias'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Transferencias'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  '/transferencias/{idCuenta}/{idUsuarioEjecuta}/{idTransferencia}':
+    get:
+      tags:
+        - transferencias
+      summary: >-
+        Necesario para el método obtenerListaTransferencias. Sirve para ver una
+        transferencia concreta con seguridad
+      operationId: verTransferencia
+      parameters:
+        - name: idCuenta
+          description: Cuenta de la que se quiere ver la transferencia
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idUsuarioEjecuta
+          description: Usuario que intenta ver la transferencia
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idTransferencia
+          description: Transferencia que se quiere ver
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Transferencia'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Transferencia'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Transferencia'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  '/retiradas/{idUsuarioEjecuta}':
+    post:
+      tags:
+        - retiradas
+      summary: Realizar una retirada de una cuenta
+      operationId: crearRetirada
+      parameters:
+        - name: idUsuarioEjecuta
+          description: Usuario que realiza la retirada
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '201':
+          headers:
+            Location:
+              description: 'http://localhost:8080/Banco/api/retiradas/16'
+              schema:
+                type: string
+          description: Created. Successful operation
+        '401':
+          description: Unauthorized
+        '412':
+          description: Precondition Failed
+        '500':
+          description: Internal Server Error
+      requestBody:
+        $ref: '#/components/requestBodies/Retirada'
+  '/retiradas/{idUsuario}/{idUsuarioEjecuta}':
+    get:
+      tags:
+        - retiradas
+      summary: Obtener lista de retiradas de un usuario según varios criterios
+      operationId: obtenerListaRetiradas
+      parameters:
+        - name: idUsuario
+          description: Usuario del que se quieren obtener las retiradas
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idUsuarioEjecuta
+          description: Usuario que quiere obtener la lista de retiradas
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: min
+          in: query
+          required: false
+          description: Establece el importe mínimo que tiene que tener una retirada
+          schema:
+            type: string
+            default: '0'
+        - name: max
+          in: query
+          required: false
+          description: Establece el importe máximo que tiene que tener una retirada
+          schema:
+            type: string
+            default: '99999'
+        - name: date
+          description: Fecha en la que se realizó la retirada
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Retiradas'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Retiradas'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  '/retiradas/{idUsuario}/{idUsuarioEjecuta}/{idRetirada}':
+    get:
+      tags:
+        - retiradas
+      summary: >-
+        Necesario para el método obtenerListaRetiradas. Sirve para ver una
+        retirada concreta con seguridad
+      operationId: verRetirada
+      parameters:
+        - name: idUsuario
+          description: Usuario del que se quiere ver la retirada
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idUsuarioEjecuta
+          description: Usuario que intenta ver la retirada
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idRetirada
+          description: Retirada que se quiere ver
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Retirada'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Retirada'
+            text/plain:
+              schema:
+                $ref: '#/components/schemas/Retirada'
+        '401':
+          description: Unauthorized
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+  '/movimientos/{idUsuario}/{idUsuarioEjecuta}':
+    get:
+      tags:
+        - movimientos
+      summary: >-
+        Obtener lista de movimientos de un usuario en todas sus cuentas según
+        varios criterios
+      operationId: obtenerListaMovimientos
+      parameters:
+        - name: idUsuario
+          description: Usuario del que se quieren obtener los movimientos
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: idUsuarioEjecuta
+          description: Usuario que quiere obtener la lista de movimientos
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: min
+          in: query
+          required: false
+          description: Establece el importe mínimo que tiene que tener un movimiento
+          schema:
+            type: string
+            default: '0'
+        - name: max
+          in: query
+          required: false
+          description: Establece el importe máximo que tiene que tener un movimiento
+          schema:
+            type: string
+            default: '99999'
+        - name: date
+          description: Fecha en la que se realizó el movimiento
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movimientos'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Movimientos'
+        '204':
+          description: No Content
+        '401':
+          description: Unauthorized
+        '500':
+          description: Internal Server Error
+  '/appMovil/{idUsuario}':
+    get:
+      tags:
+        - appMovil
+      summary: Ver todos los datos de un usuario a través de la appMovil
+      operationId: appMovil
+      parameters:
+        - name: idUsuario
+          description: Usuario del que se ven los datos
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppMovil'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/AppMovil'
+        '404':
+          description: Not Found
+        '500':
+          description: Internal Server Error
+components:
+  schemas:
+    Usuario:
+      type: object
+      properties:
+        idUsuario:
+          type: integer
+          example: 6
+          xml:
+            attribute: true
+          readOnly: true
+        nombre:
+          type: string
+          example: Eva
+        calle:
+          type: string
+          example: 'C/ Cervatillo, 8'
+        localidad:
+          type: string
+          example: Madrid
+        telefono:
+          type: string
+          example: 987654321
+        tipo:
+          type: string
+          example: C
+      xml:
+        name: usuario
+    UsuariosSaldo:
+      type: object
+      xml:
+        name: usuarios
+      properties:
+        usuarios:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkSaldo'
+    Cuenta:
+      type: object
+      properties:
+        idCuenta:
+          type: integer
+          example: 17
+          readOnly: true
+          xml:
+            attribute: true
+        saldo:
+          type: number
+          example: 0
+        usuario_idUsuario:
+          type: integer
+          example: 5
+      xml:
+        name: cuenta
+    Cuentas:
+      type: object
+      xml:
+        name: cuentas
+      properties:
+        cuentas:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkSaldoCuenta'
+    Transferencia:
+      type: object
+      properties:
+        idTransferencia:
+          type: integer
+          example: 17
+          xml:
+            attribute: true
+          readOnly: true
+        cuenta_idCuenta:
+          type: integer
+          example: 1
+        fecha:
+          type: string
+          example: 20200404
+          readOnly: true
+        importe:
+          type: number
+          example: 100
+        idCuentaDestino:
+          type: integer
+          example: 2
+        orden:
+          type: integer
+          example: 1
+          readOnly: true
+      xml:
+        name: transferencia
+    Transferencias:
+      type: object
+      xml:
+        name: transferencias
+      properties:
+        transferencias:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkTransferencia'
+    Retirada:
+      type: object
+      xml:
+        name: retirada
+      properties:
+        idRetirada:
+          type: integer
+          example: 16
+          readOnly: true
+          xml:
+            attribute: true
+        cuenta_idCuenta:
+          type: integer
+          example: 1
+        fecha:
+          type: string
+          example: 20200404
+          readOnly: true
+        importe:
+          type: number
+          example: 100
+    Retiradas:
+      type: object
+      xml:
+        name: retiradas
+      properties:
+        retiradas:
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkRetirada'
+    Movimientos:
+      type: object
+      xml:
+        name: movimientos
+      properties:
+        transferencias:
+          xml:
+            name: transferencia
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkCuentaTransferencia'
+        retiradas:
+          xml:
+            name: retirada
+          type: array
+          items:
+            $ref: '#/components/schemas/LinkCuentaRetirada'
+    AppMovil:
+      type: object
+      xml:
+        name: appMovil
+      properties:
+        usuario:
+          $ref: '#/components/schemas/Usuario'
+        cuentas:
+          $ref: '#/components/schemas/Cuentas'
+        movimientos:
+          $ref: '#/components/schemas/Movimientos'
+    LinkTransferencia:
+      type: object
+      properties:
+        rel:
+          type: string
+          example: self
+          xml:
+            attribute: true
+        href:
+          type: string
+          xml:
+            attribute: true
+          example: 'http://localhost:8080/Banco/api/transferencias/4/1/2'
+      xml:
+        name: transferencia
+    LinkRetirada:
+      type: object
+      properties:
+        rel:
+          type: string
+          example: self
+          xml:
+            attribute: true
+        href:
+          type: string
+          xml:
+            attribute: true
+          example: 'http://localhost:8080/Banco/api/retiradas/1/1/9'
+      xml:
+        name: retirada
+    LinkCuentaTransferencia:
+      type: object
+      properties:
+        idCuenta:
+          type: integer
+          example: 4
+          xml:
+            attribute: true
+        href:
+          type: string
+          example: 'http://localhost:8080/Banco/api/transferencias/4/1/7'
+          xml:
+            attribute: true
+    LinkCuentaRetirada:
+      type: object
+      properties:
+        idCuenta:
+          type: integer
+          example: 2
+          xml:
+            attribute: true
+        href:
+          type: string
+          example: 'http://localhost:8080/Banco/api/retiradas/1/1/11'
+          xml:
+            attribute: true
+    LinkSaldo:
+      type: object
+      properties:
+        idUsuario:
+          type: integer
+          example: 4
+          xml:
+            attribute: true
+        saldo:
+          type: number
+          example: 650
+          xml:
+            attribute: true
+        href:
+          type: string
+          example: 'http://localhost:8080/Banco/api/usuarios/4/1'
+          xml:
+            attribute: true
+      xml:
+        name: usuario
+    LinkSaldoCuenta:
+      type: object
+      xml:
+        name: cuenta
+      properties:
+        saldo:
+          type: number
+          example: 900
+          xml:
+            attribute: true
+        href:
+          type: string
+          example: 'http://localhost:8080/Banco/api/cuentas/1/1'
+          xml:
+            attribute: true
+        idCuenta:
+          type: integer
+          example: 1
+          xml:
+            attribute: true
+  requestBodies:
+    Usuario:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Usuario'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Usuario'
+      description: Añadir o modificar un usuario de banco
+      required: true
+    Cuenta:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Cuenta'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Cuenta'
+      description: Añadir una cuenta de banco
+      required: true
+    Transferencia:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Transferencia'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Transferencia'
+      description: Realizar una transferencia
+      required: true
+    Retirada:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Retirada'
+        application/xml:
+          schema:
+            $ref: '#/components/schemas/Retirada'
+      description: Realizar una retirada
+      required: true
+

@@ -1,0 +1,158 @@
+-- -----------------------------------------------------
+-- Eva Tagarro Lopez de Ayala z170183
+-- Jose Manuel Diaz Urraco z170085
+-- -----------------------------------------------------
+-- Para la conexion se ha utilizado el usuario root/restuser.
+-- Aunque no es lo mas ortodoxo pero a efectos de la practica
+-- se considero que no era necesario crear un nuevo usuario.
+-- -----------------------------------------------------
+-- Gestor utilizado:
+-- MySQL (de la maquina virtual proporcionada por la asignatura)
+-- Version 5.5.22
+-- -----------------------------------------------------
+
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+-- -----------------------------------------------------
+-- Schema Banco
+-- -----------------------------------------------------
+CREATE SCHEMA IF NOT EXISTS `Banco` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `Banco` ;
+
+-- -----------------------------------------------------
+-- Table `Banco`.`Usuario`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `Banco`.`Usuario` ;
+
+CREATE TABLE IF NOT EXISTS `Banco`.`Usuario` (
+  `idUsuario` INT NOT NULL,
+  `nombre` VARCHAR(45) NULL,
+  `calle` VARCHAR(45) NULL,
+  `localidad` VARCHAR(45) NULL,
+  `telefono` VARCHAR(45) NULL,
+  `tipo` CHAR(1) NULL,
+  PRIMARY KEY (`idUsuario`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = big5;
+
+
+-- -----------------------------------------------------
+-- Table `Banco`.`Cuenta`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `Banco`.`Cuenta` ;
+
+CREATE TABLE IF NOT EXISTS `Banco`.`Cuenta` (
+  `idCuenta` INT NOT NULL,
+  `saldo` DOUBLE NULL,
+  `Usuario_idUsuario` INT NOT NULL,
+  PRIMARY KEY (`idCuenta`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `Banco`.`Transferencia`
+-- -----------------------------------------------------
+
+DROP TABLE IF EXISTS `Banco`.`Transferencia` ;
+
+CREATE TABLE IF NOT EXISTS `Banco`.`Transferencia` (
+  `idTransferencia` INT NOT NULL,
+  `Cuenta_idCuenta` INT NOT NULL,
+  `fecha` INT NOT NULL,
+  `importe`  DOUBLE NULL,
+  `idCuentaDestino` INT NOT NULL,
+  `orden` INT NOT NULL,
+  PRIMARY KEY (`idTransferencia`))
+ENGINE = InnoDB;
+
+-- -----------------------------------------------------
+-- Table `Banco`.`Retirada`
+-- -----------------------------------------------------
+
+DROP TABLE IF EXISTS `Banco`.`Retirada` ;
+
+CREATE TABLE IF NOT EXISTS `Banco`.`Retirada` (
+  `idRetirada` INT NOT NULL,
+  `Cuenta_idCuenta` INT NOT NULL,
+  `fecha` INT NOT NULL,
+  `importe`  DOUBLE NULL,
+  PRIMARY KEY (`idRetirada`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Inserts necesarios para la correcta ejecución del cliente
+-- -----------------------------------------------------
+INSERT INTO Banco.Usuario VALUES (1, 'Aitana Ocana', 'C/ Fresa, 2', 'Tokio', '683569108', 'A');
+INSERT INTO Banco.Usuario VALUES (2, 'Blas Canto', 'C/ Melon, 8', 'Nairobi', '678754331', 'C');
+INSERT INTO Banco.Usuario VALUES (3, 'David Bisbal', 'C/ Sandia, 13', 'Moscu', '698713233', 'C');
+INSERT INTO Banco.Usuario VALUES (4, 'Becky G', 'C/ Cereza, 7', 'Rio de Janeiro', '695984387', 'C');
+INSERT INTO Banco.Usuario VALUES (5, 'Daddy Yankee', 'C/ Platano, 9', 'Denver', '698712938', 'C');
+
+INSERT INTO Banco.Cuenta VALUES (1, 0, 1);
+INSERT INTO Banco.Cuenta VALUES (2, 0, 1);
+INSERT INTO Banco.Cuenta VALUES (3, 0, 1);
+INSERT INTO Banco.Cuenta VALUES (4, 0, 1);
+INSERT INTO Banco.Cuenta VALUES (5, 0, 1);
+INSERT INTO Banco.Cuenta VALUES (6, 0, 1);
+INSERT INTO Banco.Cuenta VALUES (7, 0, 1);
+INSERT INTO Banco.Cuenta VALUES (8, 0, 1);
+INSERT INTO Banco.Cuenta VALUES (9, 0, 1);
+INSERT INTO Banco.Cuenta VALUES (10, 0, 1);
+INSERT INTO Banco.Cuenta VALUES (11, 0, 2);
+INSERT INTO Banco.Cuenta VALUES (12, 0, 2);
+INSERT INTO Banco.Cuenta VALUES (13, 0, 2);
+INSERT INTO Banco.Cuenta VALUES (14, 0, 3);
+INSERT INTO Banco.Cuenta VALUES (15, 0, 3);
+INSERT INTO Banco.Cuenta VALUES (16, 0, 4);
+
+UPDATE Banco.Cuenta SET saldo = saldo + 1000.50 where idCuenta = 1;
+UPDATE Banco.Cuenta SET saldo = saldo + 1500.00 where idCuenta = 2;
+UPDATE Banco.Cuenta SET saldo = saldo + 2000.00 where idCuenta = 3;
+UPDATE Banco.Cuenta SET saldo = saldo + 3500.50 where idCuenta = 4;
+UPDATE Banco.Cuenta SET saldo = saldo + 1750.50 where idCuenta = 5;
+UPDATE Banco.Cuenta SET saldo = saldo + 75.50 where idCuenta = 6;
+UPDATE Banco.Cuenta SET saldo = saldo + 50.50 where idCuenta = 7;
+UPDATE Banco.Cuenta SET saldo = saldo + 1250.50 where idCuenta = 8;
+UPDATE Banco.Cuenta SET saldo = saldo + 2500.50 where idCuenta = 9;
+UPDATE Banco.Cuenta SET saldo = saldo + 1250.50 where idCuenta = 10;
+UPDATE Banco.Cuenta SET saldo = saldo + 500.00 where idCuenta = 11;
+UPDATE Banco.Cuenta SET saldo = saldo + 10.00 where idCuenta = 12;
+UPDATE Banco.Cuenta SET saldo = saldo + 1750.50 where idCuenta = 13;
+UPDATE Banco.Cuenta SET saldo = saldo + 2000.00 where idCuenta = 14;
+UPDATE Banco.Cuenta SET saldo = saldo + 650.00 where idCuenta = 16;
+
+INSERT INTO Banco.Transferencia values (1, 4, 20200119, 101.01, 11, 1);
+INSERT INTO Banco.Transferencia values (2, 4, 20200121, 20.05, 12, 2);
+INSERT INTO Banco.Transferencia values (3, 4, 20200128, 35.86, 13, 3);
+INSERT INTO Banco.Transferencia values (4, 4, 20200216, 67.24, 14, 4);
+INSERT INTO Banco.Transferencia values (5, 4, 20200219, 130.43, 16, 5);
+INSERT INTO Banco.Transferencia values (6, 4, 20200225, 24.65, 1, 6);
+INSERT INTO Banco.Transferencia values (7, 4, 20200227, 236.43, 2, 7);
+INSERT INTO Banco.Transferencia values (8, 4, 20200301, 265.34, 3, 8);
+INSERT INTO Banco.Transferencia values (9, 4, 20200309, 124.43, 5, 9);
+INSERT INTO Banco.Transferencia values (10, 4, 20200319, 100.43, 6, 10);
+INSERT INTO Banco.Transferencia values (11, 4, 20200320, 53.34, 7, 11);
+INSERT INTO Banco.Transferencia values (12, 4, 20200323, 128.35, 8, 12);
+INSERT INTO Banco.Transferencia values (13, 4, 20200401, 53.65, 9, 13);
+INSERT INTO Banco.Transferencia values (14, 12, 20200402, 53.34, 3, 1);
+INSERT INTO Banco.Transferencia values (15, 12, 20200403, 78.35, 5, 2);
+INSERT INTO Banco.Transferencia values (16, 13, 20200404, 98.75, 6, 1);
+
+INSERT INTO Banco.Retirada values (1, 1, 20200101, 12.56);
+INSERT INTO Banco.Retirada values (2, 1, 20200107, 43.43);
+INSERT INTO Banco.Retirada values (3, 1, 20200108, 65.21);
+INSERT INTO Banco.Retirada values (4, 1, 20200118, 125.53);
+INSERT INTO Banco.Retirada values (5, 1, 20200119, 23.35);
+INSERT INTO Banco.Retirada values (6, 1, 20200209, 115.50);
+INSERT INTO Banco.Retirada values (7, 1, 20200214, 32.90);
+INSERT INTO Banco.Retirada values (8, 1, 20200216, 3.99);
+INSERT INTO Banco.Retirada values (9, 1, 20200218, 42.22);
+INSERT INTO Banco.Retirada values (10, 2, 20200221, 10.05);
+INSERT INTO Banco.Retirada values (11, 2, 20200227, 32.02);
+INSERT INTO Banco.Retirada values (12, 4, 20200309, 12.42);
+INSERT INTO Banco.Retirada values (13, 4, 20200317, 32.23);
+INSERT INTO Banco.Retirada values (14, 4, 20200329, 3.21);
+INSERT INTO Banco.Retirada values (15, 3, 20200403, 1.01);
